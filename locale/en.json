@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Plugin auto updater",
+    "description": "Checks installed plugins for newer releases and updates them automatically, with uninstall + reinstall as the fallback."
+  }
+}
