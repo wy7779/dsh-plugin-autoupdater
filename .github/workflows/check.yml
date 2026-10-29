@@ -1,0 +1,52 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check index.js
+          node --check client.js
+
+      - name: Validate JSON resources
+        run: |
+          node -e "JSON.parse(require('node:fs').readFileSync('package.json', 'utf8'))"
+          node -e "JSON.parse(require('node:fs').readFileSync('locale/zh.json', 'utf8'))"
+          node -e "JSON.parse(require('node:fs').readFileSync('locale/en.json', 'utf8'))"
+
+      - name: Check bundle manifest fields
+        run: |
+          node -e "
+          const pkg = JSON.parse(require('node:fs').readFileSync('package.json', 'utf8'));
+          if (typeof pkg.name !== 'string' || pkg.name.length === 0) throw new Error('package.json: missing name');
+          if (pkg.dsh?.bundle?.patch !== './cordis.patch.yml') throw new Error('package.json: missing dsh.bundle.patch');
+          if (pkg.dsh?.client?.platform !== 'web') throw new Error('package.json: missing dsh.client.platform');
+          if (!Array.isArray(pkg.files) || !pkg.files.includes('index.js')) throw new Error('package.json: files list must include index.js');
+          "
+
+      - name: Check patch and resources exist
+        run: |
+          test -f cordis.patch.yml
+          test -f index.js
+          test -f client.js
+          test -f icon.svg
+          test -f locale/zh.json
+          test -f locale/en.json
