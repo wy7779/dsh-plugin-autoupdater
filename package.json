@@ -1,9 +1,34 @@
 {
   "name": "dsh-plugin-autoupdater",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "description": "Checks installed plugins for newer npm releases and updates them automatically, falling back to uninstall + reinstall when the in-place update is refused.",
+  "license": "MIT",
+  "author": "wy7779",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wy7779/dsh-plugin-autoupdater.git"
+  },
+  "homepage": "https://github.com/wy7779/dsh-plugin-autoupdater#readme",
+  "bugs": {
+    "url": "https://github.com/wy7779/dsh-plugin-autoupdater/issues"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "auto-update"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node --check index.js && node --check client.js",
+    "prepack": "node --check index.js && node --check client.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -32,21 +57,5 @@
         "@deepseek-ai/dsh-client-ui-settings-general"
       ]
     }
-  },
-  "license": "MIT",
-  "author": "wy7779",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wy7779/dsh-plugin-autoupdater.git"
-  },
-  "homepage": "https://github.com/wy7779/dsh-plugin-autoupdater#readme",
-  "bugs": {
-    "url": "https://github.com/wy7779/dsh-plugin-autoupdater/issues"
-  },
-  "keywords": [
-    "dsh-plugin",
-    "deepseek-harness",
-    "dsh",
-    "auto-update"
-  ]
+  }
 }
