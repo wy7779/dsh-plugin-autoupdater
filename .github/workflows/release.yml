@@ -34,6 +34,9 @@ jobs:
       - name: Pack the npm tarball
         run: npm pack
 
+      - name: Verify the package is publishable (dry run, no credentials)
+        run: npm publish --dry-run --access public
+
       - name: Upload the tarball as a workflow artifact
         uses: actions/upload-artifact@v4
         with:
